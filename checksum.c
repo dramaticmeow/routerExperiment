@@ -18,7 +18,7 @@ int check_sum(unsigned short *iphd,int len,unsigned short checksum)
 unsigned short count_check_sum(unsigned short *iphd)
 {
     *(iphd + 5) = 0;
-    *(unsigned char*)(iphd+4)--;
+    *((unsigned char*)(iphd+4))--;
    unsigned int cksum = 0;
    int i;
    for(i = 1; i <= 10; i++){

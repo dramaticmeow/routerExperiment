@@ -13,7 +13,6 @@
 //接收路由信息的线程
 void *thr_fn(void *arg)
 {
-	int st=0;
 	struct selfroute *selfrt; 
 	selfrt = (struct selfroute*)malloc(sizeof(struct selfroute));
 	memset(selfrt,0,sizeof(struct selfroute));
@@ -24,12 +23,28 @@ void *thr_fn(void *arg)
   	head = ifni;
 	char *ifname;
 
+	int sock_fd;
+
+	struct sockaddr_in server_addr;
+	sock_fd = socket(AF_INET, SOCK_STREAM, 0)
+	bzero(&server_addr, sizeof(struct sockaddr_in));
+	server_addr.sin_family = AF_INET;
+	server_addr.sin_addr.s_addr = inet_addr("127.0.0.1");
+	server_addr.sin_port = htons(800);
+	bind(sock_fd, (struct sockaddr *)(&server_addr), sizeof(struct sockaddr);
+	listen(sock_fd, 5);
+
+
 
 	// add-24 del-25
 	while(1)
 	{
-		st=static_route_get(selfrt);
-		if(st == 1)
+		int conn_fd = accept(sock_fd, (struct sockaddr *)NULL, NULL);
+		ret = recv(conn_fd, selfrt, sizeof(struct selfroute), 0);
+		
+		
+		
+		if(1 == 1)
 		{
 			if(selfrt->cmdnum == 24)
 			{
@@ -45,17 +60,20 @@ void *thr_fn(void *arg)
 
 				{
 					//插入到路由表里
+					insert_route(selfrt->prefix.s_addr, selfrt->prefixlen, ifname, selfrt->ifindex, selfrt->nextaddr.s_addr);
 				}
 			}
 			else if(selfrt->cmdnum == 25)
 			{
 				//从路由表里删除路由
+				delete_route(selfrt->prefix, selfrt->prefixlen);
 			}
 		}
+		close(conn_fd);
 
 	}
-
 }
+
 
 int main()	
 {

@@ -24,6 +24,7 @@ void *thr_fn(void *arg)
   	head = ifni;
 	char *ifname;
 
+
 	// add-24 del-25
 	while(1)
 	{
@@ -115,7 +116,7 @@ int main()
 					memcpy(iphead, skbuf+14, 20);
 					
 					{
-						c = check_sum(iphead, 0, 0);
+						c = check_sum((unsigned short*)iphead, 0, 0);
 					//调用校验函数check_sum，成功返回1
 					}
 					if(c ==1)
@@ -128,7 +129,7 @@ int main()
 					}
 
 					{
-						count_check_sum(iphead);
+						count_check_sum((unsigned short*)iphead);
 					//调用计算校验和函数count_check_sum，返回新的校验和 
 					} 
 
